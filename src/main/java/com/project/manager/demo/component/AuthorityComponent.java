@@ -17,7 +17,7 @@ public class AuthorityComponent {
     @PostConstruct
     private void insertNewAuthorities() {
         System.out.println("Inserting data");
-        authorityRepository.save(new Authority("ADMIN"));
-        authorityRepository.save(new Authority("STUDENT"));
+        authorityRepository.save(new Authority("ROLE_ADMIN"));
+        authorityRepository.save(new Authority("ROLE_STUDENT"));
     }
 }

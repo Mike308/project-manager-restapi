@@ -20,7 +20,7 @@ public class StudentControllerImpl implements StudentController {
 
     @Override
     @PostMapping("/add")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Student addStudent(@RequestBody Student student) {
         return studentService.addStudent(student);
     }
