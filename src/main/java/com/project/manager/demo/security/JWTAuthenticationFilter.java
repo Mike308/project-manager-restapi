@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.stream.Collectors;
 
@@ -32,9 +33,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         try {
             User user = new ObjectMapper().readValue(httpServletRequest.getInputStream(), User.class);
-            Authentication authentication = authenticationManager.authenticate(
+            return authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), new ArrayList<>()));
-            return authentication;
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -43,18 +43,16 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-                                            FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        String authorities [] =authResult.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()).toArray(new String[0]);
+                                            FilterChain chain, Authentication authResult) throws IOException {
+        String[] authorities = authResult.getAuthorities().stream().map(GrantedAuthority::getAuthority).toArray(String[]::new);
         String token = JWT.create()
                 .withSubject(((User) (authResult.getPrincipal())).getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .withClaim("userId", ((User) (authResult.getPrincipal())).getId())
-                .withArrayClaim("Authority", authorities)
+                .withClaim("id", ((User) (authResult.getPrincipal())).getId())
+                .withArrayClaim("ROLE", authorities)
                 .sign(Algorithm.HMAC512(SECRET.getBytes()));
         response.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
         response.setContentType("application/json");
         response.getWriter().write("{\"token\": " + "\"" + TOKEN_PREFIX + token + "\"" + "}");
-        System.out.println("Token: " + token + "lenght: " + token.length());
-        System.out.println(HEADER_STRING + ":" + TOKEN_PREFIX + " " + token + " " + (HEADER_STRING + ":" + TOKEN_PREFIX + " " + token).length());
     }
 }
