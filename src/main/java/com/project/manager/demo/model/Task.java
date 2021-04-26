@@ -16,26 +16,26 @@ public class Task {
     @GeneratedValue
     private long id;
 
-    @Column(name="project_id", nullable = false)
+    @Column(name = "project_id", nullable = false)
     private String projectId;
 
-    @Column(name="task_name", nullable = false)
-    private String taskName;
+    @Column(nullable = false)
+    private String name;
 
-    @Column(name="task_order")
-    private String taskOrder;
+    @Column
+    private String sequence;
 
-    @Column(name="task_description")
-    private String taskDescription;
+    @Column
+    private String description;
 
-    @Column(name="return_date_time", nullable = false)
+    @Column(name = "return_date_time", nullable = false)
     private String returnDateTime;
 
-    public Task(String projectId, String taskName, String taskOrder, String taskDescription, String returnDateTime) {
+    public Task(String projectId, String name, String sequence, String description, String returnDateTime) {
         this.projectId = projectId;
-        this.taskName = taskName;
-        this.taskOrder = taskOrder;
-        this.taskDescription = taskDescription;
+        this.name = name;
+        this.sequence = sequence;
+        this.description = description;
         this.returnDateTime = returnDateTime;
     }
 }
