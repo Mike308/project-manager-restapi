@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -44,7 +43,14 @@ public class User implements UserDetails {
         this.authorities = authorities;
     }
 
-    public User(String username, String password, boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired, boolean isEnabled, Set<Authority> authorities) {
+    public User(String username,
+                String password,
+                boolean isAccountNonExpired,
+                boolean isAccountNonLocked,
+                boolean isCredentialsNonExpired,
+                boolean isEnabled,
+                Set<Authority> authorities) {
+
         this.username = username;
         this.password = password;
         this.isAccountNonExpired = isAccountNonExpired;

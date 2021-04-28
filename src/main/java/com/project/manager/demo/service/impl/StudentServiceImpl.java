@@ -5,7 +5,6 @@ import com.project.manager.demo.repository.StudentRepository;
 import com.project.manager.demo.service.StudentService;
 import org.springframework.stereotype.Service;
 
-
 @Service
 public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
@@ -23,5 +22,4 @@ public class StudentServiceImpl implements StudentService {
     public Student addStudent(Student student) {
         return studentRepository.save(student);
     }
-
 }
