@@ -5,9 +5,6 @@ import com.project.manager.demo.model.User;
 import com.project.manager.demo.repository.UserRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collections;
@@ -16,43 +13,15 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
-public class UserServiceTest {
+class UserServiceTest {
 
-    @Autowired
-    private UserService userService;
-
-    @Mock
-    private UserRepository userRepository;
+    private UserRepository userRepository = mock(UserRepository.class);
 
     static User mockedUser;
 
     @BeforeAll
     static void setup() {
         mockedUser = prepareMockedUser();
-    }
-
-    /***
-     * This one just for testing purpose.
-     * Here we rely on real 'repository'.
-     *
-     * e.g.: PostgreSQL is required to be setup.
-     */
-    @Test
-    void shouldLoadAdmin() {
-        // given
-        String userName = "admin";
-
-        // when
-        UserDetails userDetails = userService.loadUserByUsername(userName);
-
-        // then
-        assertEquals("admin", userDetails.getUsername());
-        assertEquals("admin1234", userDetails.getPassword());
-        assertEquals(1, userDetails.getAuthorities().size());
-        assertTrue(userDetails.isAccountNonExpired());
-        assertTrue(userDetails.isCredentialsNonExpired());
-        assertTrue(userDetails.isEnabled());
     }
 
     @Test
