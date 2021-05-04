@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class UserService implements UserDetailsService {
+
     private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
@@ -18,6 +19,10 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        if (s == null || s.trim().isEmpty()) {
+            throw new RuntimeException("Username is mandatory!");
+        }
+
         return userRepository.findByUsername(s);
     }
 }
