@@ -7,5 +7,5 @@ public interface TaskService {
     Task addTask(Task task);
     Optional<Task> getTaskById(long id);
     Task getTaskByProjectId(String projectId);
-    Task updateTaskDescription(long id);
+    Task updateTask(long id, Task task);
 }

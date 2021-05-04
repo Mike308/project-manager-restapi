@@ -31,9 +31,13 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task updateTaskDescription(long id) {
-        Task newDescription = taskRepository.findById(id).get();
-        newDescription.setDescription("5");
-        return taskRepository.save(newDescription);
+    public Task updateTask(long id, Task task) {
+        Task newTask = taskRepository.findById(id).get();
+        newTask.setProjectId(task.getProjectId());
+        newTask.setName(task.getName());
+        newTask.setSequence(task.getSequence());
+        newTask.setDescription(task.getDescription());
+        newTask.setReturnDateTime(task.getReturnDateTime());
+        return taskRepository.save(newTask);
     }
 }
