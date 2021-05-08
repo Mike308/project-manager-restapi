@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -26,18 +27,16 @@ public class User implements UserDetails {
     private boolean isCredentialsNonExpired;
     private boolean isEnabled;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-//    @JoinTable(name = "users_auhorities", joinColumns = {@JoinColumn(name = "user_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "authority_id")})
-    private Set<Authority> authorities;
+    @JoinTable
+    @ManyToMany
+    private List<Authority> authorities;
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
-    public User(String username, String password, Set<Authority> authorities) {
+    public User(String username, String password, List<Authority> authorities) {
         this.username = username;
         this.password = password;
         this.authorities = authorities;
@@ -49,7 +48,7 @@ public class User implements UserDetails {
                 boolean isAccountNonLocked,
                 boolean isCredentialsNonExpired,
                 boolean isEnabled,
-                Set<Authority> authorities) {
+                List<Authority> authorities) {
 
         this.username = username;
         this.password = password;
@@ -59,6 +58,18 @@ public class User implements UserDetails {
         this.isEnabled = isEnabled;
         this.authorities = authorities;
     }
+
+    public void update(User user) {
+        this.username = user.username;
+        this.password = user.password;
+        this.authorities = user.authorities;
+        this.isAccountNonExpired = user.isAccountNonExpired;
+        this.isEnabled = user.isEnabled;
+        this.isAccountNonLocked = user.isAccountNonLocked;
+        this.isCredentialsNonExpired = user.isCredentialsNonExpired;
+    }
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

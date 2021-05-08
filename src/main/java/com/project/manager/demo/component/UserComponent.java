@@ -6,7 +6,9 @@ import com.project.manager.demo.repository.UserRepository;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -19,12 +21,12 @@ public class UserComponent {
 
     @PostConstruct
     private void addAdminUser() {
-        Set<Authority> authorities = new HashSet<>();
+        List<Authority> authorities = new ArrayList<>();
         authorities.add(new Authority(1, "ADMIN"));
         authorities.add(new Authority(2, "STUDENT"));
         userRepository.save(new User("admin", "admin1234", true, true,
                 true, true, authorities));
-        Set<Authority> testUserAuthorities = new HashSet<>();
+        List<Authority> testUserAuthorities = new ArrayList<>();
         testUserAuthorities.add(new Authority(2, "STUDENT"));
         userRepository.save(new User("test", "test1234",
                 true, true, true, true, testUserAuthorities));
