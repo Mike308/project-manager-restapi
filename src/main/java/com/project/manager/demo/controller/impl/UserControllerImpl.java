@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("/user")
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class UserControllerImpl implements UserController {
 
     private final UserService userService;

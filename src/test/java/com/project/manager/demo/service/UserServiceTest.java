@@ -95,8 +95,7 @@ class UserServiceTest {
         adminUser.setCredentialsNonExpired(true);
         adminUser.setAccountNonLocked(true);
         adminUser.setEnabled(false);
-        adminUser.setAuthorities(Collections.singleton(new Authority()));
-
+        adminUser.setAuthorities(Collections.emptyList());
         return adminUser;
     }
 }
