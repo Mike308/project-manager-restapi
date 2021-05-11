@@ -28,7 +28,7 @@ public class User implements UserDetails {
     private boolean isEnabled;
 
     @JoinTable
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Authority> authorities;
 
     public User(String username, String password) {
