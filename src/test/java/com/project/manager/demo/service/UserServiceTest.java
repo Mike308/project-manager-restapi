@@ -1,12 +1,12 @@
 package com.project.manager.demo.service;
 
-import com.project.manager.demo.model.Authority;
 import com.project.manager.demo.model.User;
 import com.project.manager.demo.repository.UserRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,7 +37,7 @@ class UserServiceTest {
         // then
         assertEquals("adminLocal", userDetails.getUsername());
         assertEquals("T0ps3cred11!!", userDetails.getPassword());
-        assertEquals(1, userDetails.getAuthorities().size());
+        assertTrue(userDetails.getAuthorities().isEmpty());
         assertTrue(userDetails.isAccountNonExpired());
         assertTrue(userDetails.isCredentialsNonExpired());
         assertFalse(userDetails.isEnabled());
