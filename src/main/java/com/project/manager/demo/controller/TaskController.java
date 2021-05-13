@@ -1,16 +1,16 @@
-package com.project.manager.demo.service;
+package com.project.manager.demo.controller;
 
 import com.project.manager.demo.model.Task;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface TaskService {
+public interface TaskController {
     Task addTask(Task task);
+    List<Task> getAllTasks();
     Optional<Task> getTaskById(long id);
     Task getTaskByProjectId(String projectId);
     Task updateTask(long id, Task task);
-    List<Task> getAllTasks();
     void deleteTaskById(long id);
     void deleteTaskByProjectId(String projectId);
 }
