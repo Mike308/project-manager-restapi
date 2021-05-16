@@ -38,7 +38,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         chain.doFilter(request, response);
     }
 
-    private Collection<? extends GrantedAuthority> getAuthorities(String [] roles) {
+    private Collection<? extends GrantedAuthority> getAuthorities(String[] roles) {
         List<GrantedAuthority> authorities = new ArrayList<>();
         for (String role : roles) {
             authorities.add(new SimpleGrantedAuthority(role));
@@ -58,7 +58,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
                     .build()
                     .verify(token.replace(TOKEN_PREFIX, ""))
                     .getClaim("ROLE");
-            String [] claims = claim.asArray(String.class);
+            String[] claims = claim.asArray(String.class);
 
             if (user != null) {
                 return new UsernamePasswordAuthenticationToken(user, null, getAuthorities(claims));

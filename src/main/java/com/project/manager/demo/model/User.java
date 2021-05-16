@@ -69,8 +69,6 @@ public class User implements UserDetails {
         this.isCredentialsNonExpired = user.isCredentialsNonExpired;
     }
 
-
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;

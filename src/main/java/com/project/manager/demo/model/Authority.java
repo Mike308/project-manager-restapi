@@ -12,12 +12,13 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class Authority implements GrantedAuthority {
+
     @Id
     @GeneratedValue
     private long id;
+
     @Column
     private String authority;
-
 
     @Override
     public String getAuthority() {

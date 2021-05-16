@@ -12,6 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Data
 public class Student {
+
     @Id
     @GeneratedValue
     private long id;
