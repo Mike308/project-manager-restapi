@@ -11,14 +11,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 import static com.project.manager.demo.security.SecurityConstant.SecurityConstants.*;
 
@@ -53,6 +50,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .sign(Algorithm.HMAC512(SECRET.getBytes()));
         response.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
         response.setContentType("application/json");
-        response.getWriter().write("{\"token\": " + "\"" + TOKEN_PREFIX + token + "\"" + "}");
+        response.getWriter().print("{\""+HEADER_STRING+"\""+":"+"\""+TOKEN_PREFIX + token + "\"}");
+
     }
 }
