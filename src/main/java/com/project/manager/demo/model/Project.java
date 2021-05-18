@@ -7,31 +7,32 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
-@Table(name="project")
+@Table(name = "project")
 
 public class Project {
 
     @Id
     @GeneratedValue
-    @Column(name=czy "project_id)
-            private long projectId;
+    @Column(name = "project_id")
+    private long projectId;
 
-            @Column(nullable = false, length = 50)
-            private String name;
+    @Column(nullable = false, length = 50)
+    private String name;
 
-            @Column(length = 1000)
-            private String description;
+    @Column(length = 1000)
+    private String description;
 
-            @Column(nullable = false)
-            private LocalDateTime creationDate;
+    @Column(nullable = false)
+    private LocalDateTime creationDate;
 
-            @Column
-            private LocalDate returnDate;
+    @Column
+    private LocalDate returnDate;
 
-            @OneToMany(mappedBy = "project")
-            private List<Task> tasks;
+//    @OneToMany(mappedBy = "project")
+//    private List<Task> tasks;
 
      /*       public Student(String firstName, String surname, String indexNumber, String email, boolean isFullTimeStudent) {
         this.firstName = firstName;
@@ -44,7 +45,6 @@ public class Project {
         inverseJoinColumns = {@JoinColumn(name = "student_id")])
 
       */
-
 
 
 }
