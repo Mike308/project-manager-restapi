@@ -24,6 +24,12 @@ public class Project {
     @Column(nullable = false, length = 50)
     private String name;
 
+    @Column(name = "project_id")
+    private long projectId;
+
+    @Column(nullable = false, length = 50)
+    private String name;
+
     @Column(length = 1000)
     private String description;
 

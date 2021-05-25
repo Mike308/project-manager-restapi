@@ -4,8 +4,8 @@ import com.project.manager.demo.model.Task;
 import com.project.manager.demo.repository.TaskRepository;
 import com.project.manager.demo.service.TaskService;
 import org.springframework.stereotype.Service;
+import java.util.List;
 import java.util.Optional;
-
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -19,6 +19,7 @@ public class TaskServiceImpl implements TaskService {
     public Task addTask(Task task) {
         return taskRepository.save(task);
     }
+
 
     @Override
     public Optional<Task> getTaskById(long id) {
@@ -39,5 +40,20 @@ public class TaskServiceImpl implements TaskService {
         newTask.setDescription(task.getDescription());
         newTask.setReturnDateTime(task.getReturnDateTime());
         return taskRepository.save(newTask);
+    }
+
+    @Override
+    public List<Task> getAllTasks() {
+        return (List<Task>) taskRepository.findAll();
+    }
+
+    @Override
+    public void deleteTaskById(long id) {
+        taskRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteTaskByProjectId(String projectId) {
+        taskRepository.deleteByProjectId(projectId);
     }
 }

@@ -50,6 +50,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .sign(Algorithm.HMAC512(SECRET.getBytes()));
         response.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
         response.setContentType("application/json");
-        response.getWriter().write("{\"token\": " + "\"" + TOKEN_PREFIX + token + "\"" + "}");
+        response.getWriter().print("{\""+HEADER_STRING+"\""+":"+"\""+TOKEN_PREFIX + token + "\"}");
+
     }
 }
