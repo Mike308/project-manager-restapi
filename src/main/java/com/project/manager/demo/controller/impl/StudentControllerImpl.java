@@ -28,7 +28,7 @@ public class StudentControllerImpl implements StudentController {
 
     @Override
     @GetMapping("indexNumber/{indexNumber}")
-    public Student getStudentByIndexNumber(String indexNumber) {
+    public Student getStudentByIndexNumber(@PathVariable String indexNumber) {
         return studentService.getStudentByIndexNumber(indexNumber);
     }
 
