@@ -4,10 +4,10 @@ import com.project.manager.demo.controller.StudentController;
 import com.project.manager.demo.model.Student;
 import com.project.manager.demo.service.StudentService;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/student")
@@ -24,4 +24,35 @@ public class StudentControllerImpl implements StudentController {
     public Student addStudent(@RequestBody Student student) {
         return studentService.addStudent(student);
     }
+
+    @Override
+    @GetMapping("indexNumber/{indexNumber}")
+    public Student getStudentByIndexNumber(String indexNumber) {
+        return studentService.getStudentByIndexNumber(indexNumber);
+    }
+
+    @Override
+    @GetMapping("/{id}")
+    public Optional<Student> getStudentById(@PathVariable long id) {
+        return studentService.getStudentById(id);
+    }
+
+    @Override
+    @PutMapping("/{id}")
+    public Student updateStudent(@PathVariable long id, @RequestBody Student student) {
+        return studentService.updateStudent(id, student);
+    }
+
+    @Override
+    @GetMapping("/all")
+    public List<Student> getAllStudents() {
+        return studentService.getAllStudents();
+    }
+
+    @Override
+    @DeleteMapping("/{id}")
+    public void deleteStudentById(@PathVariable long id) {
+        studentService.deleteStudentById(id);
+    }
+
 }

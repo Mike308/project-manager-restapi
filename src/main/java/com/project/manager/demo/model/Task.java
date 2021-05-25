@@ -12,12 +12,14 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Data
 public class Task {
+
     @Id
     @GeneratedValue
     private long id;
 
-    @Column(name = "project_id", nullable = false)
-    private String projectId;
+    @ManyToOne
+    @JoinColumn(name = "project_id", nullable = false)
+    private Project projectId;
 
     @Column(nullable = false)
     private String name;
@@ -31,7 +33,7 @@ public class Task {
     @Column(name = "return_date_time", nullable = false)
     private String returnDateTime;
 
-    public Task(String projectId, String name, String sequence, String description, String returnDateTime) {
+    public Task(Project projectId, String name, String sequence, String description, String returnDateTime) {
         this.projectId = projectId;
         this.name = name;
         this.sequence = sequence;
