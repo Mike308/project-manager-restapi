@@ -23,7 +23,7 @@ public class UserComponent {
         List<Authority> authorities = new ArrayList<>();
         authorities.add(new Authority(1, "ADMIN"));
         authorities.add(new Authority(2, "STUDENT"));
-        userService.addUser(new User("admin", "p0ssw0rdX#1234123&*^", true, true,
+        userService.addUser(new User("admin", "passcode8989", true, true,
                 true, true, authorities));
         List<Authority> testUserAuthorities = new ArrayList<>();
         testUserAuthorities.add(new Authority(2, "STUDENT"));
