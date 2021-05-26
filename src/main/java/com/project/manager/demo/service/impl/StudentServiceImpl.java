@@ -36,12 +36,11 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student updateStudent(long id, Student student) {
         boolean exists = studentRepository.existsById(id);
-
         if (!exists) {
             throw new RuntimeException("Student with id={} does not exist in our database!");
         }
-
-        return studentRepository.save(student);
+        Student newStudent = new Student(id, student.getFirstName(), student.getSurname(), student.getIndexNumber(), student.getEmail(), student.isFullTimeStudent());
+        return studentRepository.save(newStudent);
     }
 
     @Override
