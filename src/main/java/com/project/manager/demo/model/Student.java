@@ -1,10 +1,12 @@
 package com.project.manager.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "student")
@@ -30,6 +32,7 @@ public class Student {
     private String email;
 
     @Column(name = "is_full_time_student")
+    @JsonProperty("isFullTimeStudent")
     private boolean isFullTimeStudent;
 
     public Student(String firstName, String surname, String indexNumber, String email, boolean isFullTimeStudent) {
@@ -39,4 +42,17 @@ public class Student {
         this.email = email;
         this.isFullTimeStudent = isFullTimeStudent;
     }
+
+    public Student(long id, String firstName, String surname, String indexNumber, String email, boolean isFullTimeStudent) {
+        this.id = id;
+        this.firstName = firstName;
+        this.surname = surname;
+        this.indexNumber = indexNumber;
+        this.email = email;
+        this.isFullTimeStudent = isFullTimeStudent;
+    }
+
+    @ManyToMany(mappedBy = "students")
+    private Set<Project> projects;
+
 }
