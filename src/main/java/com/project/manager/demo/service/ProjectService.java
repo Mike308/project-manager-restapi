@@ -1,6 +1,7 @@
 package com.project.manager.demo.service;
 
 import com.project.manager.demo.model.Project;
+import com.project.manager.demo.model.Student;
 
 import java.util.List;
 
@@ -10,4 +11,5 @@ public interface ProjectService {
     void deleteProject(long id);
     Project getProject(long id);
     List<Project> getAllProjects();
+    Project assignStudentToProject(long id, Student student);
 }

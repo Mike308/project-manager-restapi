@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -52,7 +53,7 @@ public class Student {
         this.isFullTimeStudent = isFullTimeStudent;
     }
 
-    @ManyToMany(mappedBy = "students")
-    private Set<Project> projects;
+    @ManyToOne
+    private Project project;
 
 }

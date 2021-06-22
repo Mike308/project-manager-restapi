@@ -2,6 +2,7 @@ package com.project.manager.demo.controller.impl;
 
 import com.project.manager.demo.controller.ProjectController;
 import com.project.manager.demo.model.Project;
+import com.project.manager.demo.model.Student;
 import com.project.manager.demo.service.ProjectService;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,5 +45,11 @@ public class ProjectControllerImpl implements ProjectController {
     @GetMapping("/all")
     public List<Project> getAllProjects() {
         return projectService.getAllProjects();
+    }
+
+    @Override
+    @PutMapping("/assign-student/{id}")
+    public Project assignStudentToProject(@PathVariable long id, @RequestBody Student student) {
+        return projectService.assignStudentToProject(id, student);
     }
 }
