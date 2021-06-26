@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/task")
+@CrossOrigin(origins = {"http://localhost:4200"})
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 public class TaskControllerImpl implements TaskController {
     private final TaskService taskService;
@@ -38,9 +39,9 @@ public class TaskControllerImpl implements TaskController {
     }
 
     @Override
-    @GetMapping("/projectId{projectId}")
-    public Task getTaskByProjectId(@PathVariable long projectId) {
-        return taskService.getTaskByProjectId(projectId);
+    @GetMapping("/projectId/{projectId}")
+    public List<Task> getTasksByProjectId(@PathVariable long projectId) {
+        return taskService.getTasksByProjectId(projectId);
     }
 
     @Override

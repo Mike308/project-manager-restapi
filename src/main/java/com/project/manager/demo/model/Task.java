@@ -22,7 +22,8 @@ public class Task {
     private long id;
 
     @ManyToOne
-    @JsonIgnore
+//    @JsonIgnore
+    @JsonBackReference
     private Project projectId;
 
     @Column(nullable = false)

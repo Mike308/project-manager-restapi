@@ -1,5 +1,6 @@
 package com.project.manager.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,6 +37,7 @@ public class Project {
     private LocalDate returnDate;
 
     @OneToMany(mappedBy = "projectId")
+    @JsonManagedReference
     private List<Task> tasks;
 
     @ManyToMany
