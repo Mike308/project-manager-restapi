@@ -31,15 +31,14 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task getTaskByProjectId(long projectId) {
+    public List<Task> getTasksByProjectId(long projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new RuntimeException("Nie znaleziono projektu"));
-        return taskRepository.findByProjectId(project);
+        return taskRepository.findAllByProjectId(project);
     }
 
     @Override
     public Task updateTask(long id, Task task) {
         Task newTask = taskRepository.findById(id).get();
-        newTask.setProjectId(task.getProjectId());
         newTask.setName(task.getName());
         newTask.setSequence(task.getSequence());
         newTask.setDescription(task.getDescription());
