@@ -9,8 +9,7 @@ public interface TaskController {
     Task addTask(Task task);
     List<Task> getAllTasks();
     Optional<Task> getTaskById(long id);
-    Task getTaskByProjectId(String projectId);
+    Task getTaskByProjectId(long projectId);
     Task updateTask(long id, Task task);
     void deleteTaskById(long id);
-    void deleteTaskByProjectId(String projectId);
 }

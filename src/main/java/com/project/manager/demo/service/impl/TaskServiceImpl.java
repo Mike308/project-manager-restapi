@@ -1,6 +1,8 @@
 package com.project.manager.demo.service.impl;
 
+import com.project.manager.demo.model.Project;
 import com.project.manager.demo.model.Task;
+import com.project.manager.demo.repository.ProjectRepository;
 import com.project.manager.demo.repository.TaskRepository;
 import com.project.manager.demo.service.TaskService;
 import org.springframework.stereotype.Service;
@@ -10,9 +12,11 @@ import java.util.Optional;
 @Service
 public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
+    private final ProjectRepository projectRepository;
 
-    public TaskServiceImpl(TaskRepository taskRepository) {
+    public TaskServiceImpl(TaskRepository taskRepository, ProjectRepository projectRepository) {
         this.taskRepository = taskRepository;
+        this.projectRepository = projectRepository;
     }
 
     @Override
@@ -27,8 +31,9 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task getTaskByProjectId(String projectId) {
-        return taskRepository.findByProjectId(projectId);
+    public Task getTaskByProjectId(long projectId) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new RuntimeException("Nie znaleziono projektu"));
+        return taskRepository.findByProjectId(project);
     }
 
     @Override
@@ -38,7 +43,6 @@ public class TaskServiceImpl implements TaskService {
         newTask.setName(task.getName());
         newTask.setSequence(task.getSequence());
         newTask.setDescription(task.getDescription());
-        newTask.setReturnDateTime(task.getReturnDateTime());
         return taskRepository.save(newTask);
     }
 
@@ -53,7 +57,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void deleteTaskByProjectId(String projectId) {
+    public void deleteTaskByProjectId(Project projectId) {
         taskRepository.deleteByProjectId(projectId);
     }
 }
