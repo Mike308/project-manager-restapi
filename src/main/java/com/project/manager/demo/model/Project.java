@@ -1,6 +1,5 @@
 package com.project.manager.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +10,6 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "project")
@@ -38,15 +36,15 @@ public class Project {
     private LocalDate returnDate;
 
     @OneToMany(mappedBy = "projectId")
-    private Set<Task> tasks;
+    private List<Task> tasks;
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(name = "project_student",
             joinColumns = {@JoinColumn(name = "project_id")},
             inverseJoinColumns = {@JoinColumn(name = "student_id")})
     private List<Student> students;
 
-    public Project(long id, String name, String description, LocalDate returnDate, Set<Task> tasks) {
+    public Project(long id, String name, String description, LocalDate returnDate, List<Task> tasks) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -61,7 +59,7 @@ public class Project {
         this.returnDate = returnDate;
     }
 
-    public Project(String name, String description, LocalDate returnDate, Set<Task> tasks, List<Student> students) {
+    public Project(String name, String description, LocalDate returnDate, List<Task> tasks, List<Student> students) {
         this.name = name;
         this.description = description;
         this.returnDate = returnDate;

@@ -1,5 +1,6 @@
 package com.project.manager.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -53,7 +54,8 @@ public class Student {
         this.isFullTimeStudent = isFullTimeStudent;
     }
 
-    @ManyToOne
-    private Project project;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "students")
+    private Set<Project> projects;
 
 }

@@ -39,7 +39,7 @@ public class TaskControllerImpl implements TaskController {
 
     @Override
     @GetMapping("/projectId{projectId}")
-    public Task getTaskByProjectId(@PathVariable String projectId) {
+    public Task getTaskByProjectId(@PathVariable long projectId) {
         return taskService.getTaskByProjectId(projectId);
     }
 
@@ -55,9 +55,4 @@ public class TaskControllerImpl implements TaskController {
         taskService.deleteTaskById(id);
     }
 
-    @Override
-    @DeleteMapping("/projectId{projectId}")
-    public void deleteTaskByProjectId(@PathVariable String projectId) {
-        taskService.deleteTaskByProjectId(projectId);
-    }
 }

@@ -3,6 +3,7 @@ package com.project.manager.demo.controller.impl;
 import com.project.manager.demo.controller.ProjectController;
 import com.project.manager.demo.model.Project;
 import com.project.manager.demo.model.Student;
+import com.project.manager.demo.model.Task;
 import com.project.manager.demo.service.ProjectService;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,8 +31,8 @@ public class ProjectControllerImpl implements ProjectController {
     }
 
     @Override
-    @DeleteMapping
-    public void delete(long id) {
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable long id) {
         projectService.deleteProject(id);
     }
 
@@ -51,5 +52,11 @@ public class ProjectControllerImpl implements ProjectController {
     @PutMapping("/assign-student/{id}")
     public Project assignStudentToProject(@PathVariable long id, @RequestBody Student student) {
         return projectService.assignStudentToProject(id, student);
+    }
+
+    @Override
+    @PutMapping("/assign-task/{id}")
+    public Project assignTaskToProject(@PathVariable long id, @RequestBody Task task) {
+        return projectService.assignTaskToProject(id, task);
     }
 }
