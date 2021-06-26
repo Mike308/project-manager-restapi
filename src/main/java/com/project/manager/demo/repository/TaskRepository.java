@@ -10,7 +10,6 @@ import java.util.List;
 @Transactional
 @Repository
 public interface TaskRepository extends CrudRepository<Task, Long> {
-    Task findByProjectId(Project projectId);
     List<Task> findAllByProjectId(Project projectId);
     void deleteById(long id);
     void deleteByProjectId(Project projectId);
