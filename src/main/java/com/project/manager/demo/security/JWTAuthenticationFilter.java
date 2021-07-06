@@ -47,10 +47,17 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .withClaim("id", ((User) (authResult.getPrincipal())).getId())
                 .withArrayClaim("ROLE", authorities)
+                .withClaim("indexNumber", (getIndexNumber((User)(authResult.getPrincipal()))))
                 .sign(Algorithm.HMAC512(SECRET.getBytes()));
         response.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
         response.setContentType("application/json");
         response.getWriter().print("{\""+HEADER_STRING+"\""+":"+"\""+TOKEN_PREFIX + token + "\"}");
 
+    }
+
+    private String getIndexNumber(User user) {
+        if (user.getStudent() == null)
+            return "";
+        return user.getStudent().getIndexNumber();
     }
 }

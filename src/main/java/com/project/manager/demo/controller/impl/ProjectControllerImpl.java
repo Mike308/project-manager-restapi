@@ -49,6 +49,12 @@ public class ProjectControllerImpl implements ProjectController {
     }
 
     @Override
+    @GetMapping("/all/{indexNumber}")
+    public List<Project> getAllProjectsByIndexNumber(@PathVariable String indexNumber) {
+        return projectService.getAllProjectsByStudentIndexNumber(indexNumber);
+    }
+
+    @Override
     @PutMapping("/assign-student/{id}")
     public Project assignStudentToProject(@PathVariable long id, @RequestBody Student student) {
         return projectService.assignStudentToProject(id, student);

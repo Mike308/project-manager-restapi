@@ -6,20 +6,23 @@ import com.project.manager.demo.model.Task;
 import com.project.manager.demo.repository.ProjectRepository;
 import com.project.manager.demo.repository.TaskRepository;
 import com.project.manager.demo.service.ProjectService;
+import com.project.manager.demo.validator.ProjectAndTaskPermissionValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
     private final TaskRepository taskRepository;
+    private final ProjectAndTaskPermissionValidator projectAndTaskPermissionValidator;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository, TaskRepository taskRepository) {
+    public ProjectServiceImpl(ProjectRepository projectRepository, TaskRepository taskRepository, ProjectAndTaskPermissionValidator projectAndTaskPermissionValidator) {
         this.projectRepository = projectRepository;
         this.taskRepository = taskRepository;
+        this.projectAndTaskPermissionValidator = projectAndTaskPermissionValidator;
     }
 
     @Override
@@ -47,6 +50,19 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<Project> getAllProjects() {
         return projectRepository.findAll();
+//                .findAll().parallelStream()
+//                .filter(projectAndTaskPermissionValidator::limitProjectsList)
+//                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Project> getAllProjectsByStudentIndexNumber(String indexNumber) {
+        return projectRepository.findAll()
+                .parallelStream().filter(project -> project.getStudents() != null)
+                .filter(project -> project.getStudents().parallelStream()
+                        .filter(student -> student.getIndexNumber() != null)
+                        .anyMatch(student -> student.getIndexNumber().equals(indexNumber)))
+                .collect(Collectors.toList());
     }
 
     @Override
