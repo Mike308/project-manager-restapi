@@ -5,7 +5,9 @@ import com.project.manager.demo.model.Project;
 import com.project.manager.demo.model.Student;
 import com.project.manager.demo.model.Task;
 import com.project.manager.demo.service.ProjectService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -64,5 +66,11 @@ public class ProjectControllerImpl implements ProjectController {
     @PutMapping("/assign-task/{id}")
     public Project assignTaskToProject(@PathVariable long id, @RequestBody Task task) {
         return projectService.assignTaskToProject(id, task);
+    }
+
+    @Override
+    @PostMapping("/upload-file/{id}")
+    public ResponseEntity<Object> addFileToProject(@PathVariable long id, @RequestParam("file") MultipartFile multipartFile) {
+        return projectService.addFileToProject(id, multipartFile);
     }
 }

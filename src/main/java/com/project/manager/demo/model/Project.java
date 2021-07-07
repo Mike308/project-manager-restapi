@@ -40,6 +40,11 @@ public class Project {
     @JsonManagedReference
     private List<Task> tasks;
 
+    @OneToMany(mappedBy = "project")
+    @JsonManagedReference
+    private List<ProjectFile> projectFiles;
+
+
     @ManyToMany
     @JoinTable(name = "project_student",
             joinColumns = {@JoinColumn(name = "project_id")},

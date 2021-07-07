@@ -1,14 +1,25 @@
 package com.project.manager.demo.service.impl;
 
 import com.project.manager.demo.model.Project;
+import com.project.manager.demo.model.ProjectFile;
 import com.project.manager.demo.model.Student;
 import com.project.manager.demo.model.Task;
+import com.project.manager.demo.repository.ProjectFileRepository;
 import com.project.manager.demo.repository.ProjectRepository;
 import com.project.manager.demo.repository.TaskRepository;
 import com.project.manager.demo.service.ProjectService;
 import com.project.manager.demo.validator.ProjectAndTaskPermissionValidator;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,11 +28,13 @@ public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
     private final TaskRepository taskRepository;
+    private final ProjectFileRepository projectFileRepository;
     private final ProjectAndTaskPermissionValidator projectAndTaskPermissionValidator;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository, TaskRepository taskRepository, ProjectAndTaskPermissionValidator projectAndTaskPermissionValidator) {
+    public ProjectServiceImpl(ProjectRepository projectRepository, TaskRepository taskRepository, ProjectFileRepository projectFileRepository, ProjectAndTaskPermissionValidator projectAndTaskPermissionValidator) {
         this.projectRepository = projectRepository;
         this.taskRepository = taskRepository;
+        this.projectFileRepository = projectFileRepository;
         this.projectAndTaskPermissionValidator = projectAndTaskPermissionValidator;
     }
 
@@ -81,7 +94,22 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = projectRepository.findById(id).orElseThrow(() -> new RuntimeException("Nie znaleziono projektu"));
         task.setProjectId(project);
         Task taskToSave = taskRepository.save(task);
-        System.out.println("Project: " + taskToSave.getProjectId());
         return taskToSave.getProjectId();
+    }
+
+    @Override
+    public ResponseEntity<Object> addFileToProject(long id, MultipartFile multipartFile) {
+        Project project = getProject(id);
+        try {
+            File projectFileDir = new File(File.pathSeparator + id);
+            projectFileDir.mkdir();
+            Path copyLocation = Paths.get(id + File.separator + StringUtils.cleanPath(multipartFile.getOriginalFilename()));
+            Files.copy(multipartFile.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
+            ProjectFile projectFile = new ProjectFile(multipartFile.toString(), project);
+            projectFileRepository.save(projectFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok(null);
     }
 }
