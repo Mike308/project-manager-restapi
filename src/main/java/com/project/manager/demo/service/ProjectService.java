@@ -12,6 +12,7 @@ public interface ProjectService {
     void deleteProject(long id);
     Project getProject(long id);
     List<Project> getAllProjects();
+    List<Project> getAllProjectsByStudentIndexNumber(String indexNumber);
     Project assignStudentToProject(long id, Student student);
     Project assignTaskToProject(long id, Task task);
 }

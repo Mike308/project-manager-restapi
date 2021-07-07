@@ -2,7 +2,6 @@ package com.project.manager.demo.component;
 
 import com.project.manager.demo.model.Student;
 import com.project.manager.demo.service.StudentService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -17,7 +16,7 @@ public class StudentComponent {
 
     @PostConstruct
     private void insertTestStudents() {
-        studentService.addStudent(new Student("Jan", "Kowalski", "99536", "mikwer001@utp.edu.pl", true));
+        studentService.addStudent(new Student("Jan", "Kowalski", "99536", "jankow001@utp.edu.pl", true));
         studentService.addStudent(new Student("Arkadiusz", "Piątek", "100234", "arkpia001@utp.edu.pl", true));
     }
 }

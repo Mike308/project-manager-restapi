@@ -1,5 +1,6 @@
 package com.project.manager.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,18 +23,30 @@ public class User implements UserDetails {
     private long id;
     private String username;
     private String password;
-    private boolean isAccountNonExpired;
-    private boolean isAccountNonLocked;
-    private boolean isCredentialsNonExpired;
-    private boolean isEnabled;
+    private boolean isAccountNonExpired = true;
+    private boolean isAccountNonLocked = true;
+    private boolean isCredentialsNonExpired = true;
+    private boolean isEnabled = true;
+    @JsonProperty("isAdmin")
+    private boolean isAdmin;
 
     @JoinTable
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Authority> authorities;
 
+    @OneToOne
+    private Student student;
+
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public User(Student student, String password, List<Authority> authorities) {
+        this.username = student.getEmail();
+        this.password = password;
+        this.authorities = authorities;
+        this.student = student;
     }
 
     public User(String username, String password, List<Authority> authorities) {
@@ -99,4 +112,10 @@ public class User implements UserDetails {
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
     }
+
+    public boolean isAdmin() {
+        return authorities.parallelStream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+    }
+
+
 }

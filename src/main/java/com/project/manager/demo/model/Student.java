@@ -37,6 +37,9 @@ public class Student {
     @JsonProperty("isFullTimeStudent")
     private boolean isFullTimeStudent;
 
+//    @OneToOne
+//    private User user;
+
     public Student(String firstName, String surname, String indexNumber, String email, boolean isFullTimeStudent) {
         this.firstName = firstName;
         this.surname = surname;
