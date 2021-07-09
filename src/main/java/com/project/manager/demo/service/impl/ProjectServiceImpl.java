@@ -63,9 +63,6 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<Project> getAllProjects() {
         return projectRepository.findAll();
-//                .findAll().parallelStream()
-//                .filter(projectAndTaskPermissionValidator::limitProjectsList)
-//                .collect(Collectors.toList());
     }
 
     @Override
