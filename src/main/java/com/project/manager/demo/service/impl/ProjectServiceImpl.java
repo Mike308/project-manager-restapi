@@ -9,10 +9,14 @@ import com.project.manager.demo.repository.ProjectRepository;
 import com.project.manager.demo.repository.TaskRepository;
 import com.project.manager.demo.service.ProjectService;
 import com.project.manager.demo.validator.ProjectAndTaskPermissionValidator;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -20,7 +24,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,6 +55,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @Transactional
     public void deleteProject(long id) {
         Project project = projectRepository.findById(id).orElseThrow(() -> new RuntimeException("Nie znaleziono projektu"));
         taskRepository.deleteByProjectId(project);
@@ -98,15 +105,45 @@ public class ProjectServiceImpl implements ProjectService {
     public ResponseEntity<Object> addFileToProject(long id, MultipartFile multipartFile) {
         Project project = getProject(id);
         try {
-            File projectFileDir = new File(File.pathSeparator + id);
+            File projectFileDir = new File(File.separator + id);
             projectFileDir.mkdir();
             Path copyLocation = Paths.get(id + File.separator + StringUtils.cleanPath(multipartFile.getOriginalFilename()));
             Files.copy(multipartFile.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
-            ProjectFile projectFile = new ProjectFile(multipartFile.toString(), project);
+            ProjectFile projectFile = new ProjectFile(multipartFile.getOriginalFilename(), project);
             projectFileRepository.save(projectFile);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return ResponseEntity.ok(null);
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<Object> removeFileFromProject(long id, String path) {
+        try {
+            getProject(id);
+            File projectFileDir = new File(Long.toString(id));
+            System.out.println("Dir: " + File.separator + id);
+            if (projectFileDir.exists()) {
+                System.out.println("File path: " + path);
+                File projectFile = new File(id + File.separator +  path);
+                if (projectFile.exists()) {
+                    Map<String, String> message = new HashMap<>();
+                    if (projectFile.delete()) {
+                        message.put("message", "Poprawnie usunięto plik");
+                        projectFileRepository.deleteByPath(path);
+                        return ResponseEntity.ok(message);
+                    } else {
+                        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+                    }
+                } else {
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Plik nie istnieje");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+        return null;
     }
 }
