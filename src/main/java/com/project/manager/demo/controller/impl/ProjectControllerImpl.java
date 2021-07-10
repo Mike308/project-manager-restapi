@@ -73,4 +73,10 @@ public class ProjectControllerImpl implements ProjectController {
     public ResponseEntity<Object> addFileToProject(@PathVariable long id, @RequestParam("file") MultipartFile multipartFile) {
         return projectService.addFileToProject(id, multipartFile);
     }
+
+    @Override
+    @DeleteMapping("/{id}/{path}")
+    public ResponseEntity<Object> removeFileFromProject(@PathVariable long id, @PathVariable String path) {
+        return projectService.removeFileFromProject(id, path);
+    }
 }
