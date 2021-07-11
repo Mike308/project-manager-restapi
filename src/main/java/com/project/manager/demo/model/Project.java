@@ -6,11 +6,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "project")
@@ -87,5 +90,15 @@ public class Project {
 
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
+    }
+
+    public Project removeStudentFromProject(long studentId) {
+        if (students == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Do projektu nie przydzielono studentów");
+        if (students.parallelStream().anyMatch(student -> student.getId() == studentId)) {
+            this.students = this.students.parallelStream().filter(student -> student.getId() != studentId).collect(Collectors.toList());
+            return this;
+        }
+        else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nie znaleziono studenta");
     }
 }

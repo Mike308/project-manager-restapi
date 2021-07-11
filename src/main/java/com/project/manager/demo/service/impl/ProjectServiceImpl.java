@@ -59,7 +59,11 @@ public class ProjectServiceImpl implements ProjectService {
     public void deleteProject(long id) {
         Project project = projectRepository.findById(id).orElseThrow(() -> new RuntimeException("Nie znaleziono projektu"));
         taskRepository.deleteByProjectId(project);
-        projectRepository.deleteById(id);
+        projectFileRepository.deleteProjectFileByProject(project);
+        File file = new File(String.valueOf(id));
+        if (file.exists())
+            file.delete();
+        projectRepository.delete(project);
     }
 
     @Override
@@ -105,7 +109,7 @@ public class ProjectServiceImpl implements ProjectService {
     public ResponseEntity<Object> addFileToProject(long id, MultipartFile multipartFile) {
         Project project = getProject(id);
         try {
-            File projectFileDir = new File(File.separator + id);
+            File projectFileDir = new File(String.valueOf(id));
             projectFileDir.mkdir();
             Path copyLocation = Paths.get(id + File.separator + StringUtils.cleanPath(multipartFile.getOriginalFilename()));
             Files.copy(multipartFile.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
@@ -145,5 +149,15 @@ public class ProjectServiceImpl implements ProjectService {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
         return null;
+    }
+
+    @Override
+    public ResponseEntity<Object> removeStudentFromProject(long projectId, long studentId) {
+        Project project = getProject(projectId);
+        Project projectToSave = project.removeStudentFromProject(studentId);
+        projectRepository.save(projectToSave);
+        Map<String, String> message = new HashMap<>();
+        message.put("message", "Poprawnie usunięto studenta z projektu");
+        return ResponseEntity.ok(message);
     }
 }

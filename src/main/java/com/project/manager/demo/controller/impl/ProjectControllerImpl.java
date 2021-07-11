@@ -79,4 +79,10 @@ public class ProjectControllerImpl implements ProjectController {
     public ResponseEntity<Object> removeFileFromProject(@PathVariable long id, @PathVariable String path) {
         return projectService.removeFileFromProject(id, path);
     }
+
+    @Override
+    @DeleteMapping("/remove-student-from-project/{projectId}/{studentId}")
+    public ResponseEntity<Object> removeStudentFromProject(@PathVariable long projectId, @PathVariable long studentId) {
+        return projectService.removeStudentFromProject(projectId, studentId);
+    }
 }

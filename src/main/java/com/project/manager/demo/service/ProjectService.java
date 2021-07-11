@@ -19,4 +19,5 @@ public interface ProjectService {
     Project assignTaskToProject(long id, Task task);
     ResponseEntity<Object> addFileToProject(long id, MultipartFile multipartFile);
     ResponseEntity<Object> removeFileFromProject(long id, String path);
+    ResponseEntity<Object> removeStudentFromProject(long projectId, long studentId);
 }
