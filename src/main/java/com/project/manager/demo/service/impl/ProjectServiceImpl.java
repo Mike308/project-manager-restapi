@@ -9,7 +9,10 @@ import com.project.manager.demo.repository.ProjectRepository;
 import com.project.manager.demo.repository.TaskRepository;
 import com.project.manager.demo.service.ProjectService;
 import com.project.manager.demo.validator.ProjectAndTaskPermissionValidator;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,10 +22,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,7 +57,17 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Project updateProject(long id, Project project) {
-        return projectRepository.save(new Project(id, project.getName(), project.getDescription(),project.getReturnDate()));
+        Project currentProject = getProject(id);
+        currentProject.setName(project.getName());
+        currentProject.setDescription(project.getDescription());
+        return projectRepository.save(currentProject);
+    }
+
+    @Override
+    public Project setReturnDate(long id) {
+        Project project = getProject(id);
+        project.setReturnDate(LocalDate.now());
+        return projectRepository.save(project);
     }
 
     @Override
@@ -122,12 +138,31 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public ResponseEntity<InputStreamResource> downloadFileFromProject(long id, String path) {
+        getProject(id);
+        File projectFileDir = new File(Long.toString(id));
+        if (projectFileDir.exists()) {
+            File projectFile = new File(id + File.separator + path);
+            try {
+                InputStreamResource inputStreamResource = new InputStreamResource(new FileInputStream(projectFile));
+                return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + path)
+                        .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                        .contentLength(projectFile.length())
+                        .body(inputStreamResource);
+            } catch (FileNotFoundException e) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nie znaleziono pliku");
+            }
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nie znaleziono katalogu projektu");
+        }
+    }
+
+    @Override
     @Transactional
     public ResponseEntity<Object> removeFileFromProject(long id, String path) {
         try {
             getProject(id);
             File projectFileDir = new File(Long.toString(id));
-            System.out.println("Dir: " + File.separator + id);
             if (projectFileDir.exists()) {
                 System.out.println("File path: " + path);
                 File projectFile = new File(id + File.separator +  path);

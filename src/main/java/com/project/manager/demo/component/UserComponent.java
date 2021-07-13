@@ -1,7 +1,6 @@
 package com.project.manager.demo.component;
 
 import com.project.manager.demo.model.Authority;
-import com.project.manager.demo.model.Student;
 import com.project.manager.demo.model.User;
 import com.project.manager.demo.service.StudentService;
 import com.project.manager.demo.service.UserService;
@@ -26,15 +25,11 @@ public class UserComponent {
     private void addAdminUser() {
         List<Authority> authorities = new ArrayList<>();
         authorities.add(new Authority(1, "ADMIN"));
-        authorities.add(new Authority(2, "STUDENT"));
+        List<User> users = userService.findAllUsers();
+        if (users.parallelStream().anyMatch(v -> v.getUsername().equals("admin")))
+            return;
         userService.addUser(new User("admin", "passcode8989", true, true,
                 true, true, authorities));
-        List<Authority> testUserAuthorities = new ArrayList<>();
-        testUserAuthorities.add(new Authority(2, "STUDENT"));
-        userService.addUser(new User("test", "test1234",
-                true, true, true, true, testUserAuthorities));
-        Student student = studentService.getStudentByIndexNumber("100234");
-        userService.addUser(new User(student, "passcode8989", testUserAuthorities));
 
     }
 }
