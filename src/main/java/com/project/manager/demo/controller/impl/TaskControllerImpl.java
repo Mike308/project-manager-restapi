@@ -12,7 +12,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/task")
 @CrossOrigin(origins = {"http://localhost:4200", "http://localhost"})
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class TaskControllerImpl implements TaskController {
     private final TaskService taskService;
 
