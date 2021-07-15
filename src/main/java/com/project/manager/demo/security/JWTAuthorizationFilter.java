@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.project.manager.demo.security.SecurityConstant.SecurityConstants.*;
+import static com.project.manager.demo.security.SecurityConstants.*;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     public JWTAuthorizationFilter(AuthenticationManager authenticationManager) {

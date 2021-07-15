@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.project.manager.demo.security.SecurityConstant.SecurityConstants.*;
+import static com.project.manager.demo.security.SecurityConstants.*;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private AuthenticationManager authenticationManager;

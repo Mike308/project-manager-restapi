@@ -22,7 +22,6 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -30,7 +29,7 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         if (s == null || s.trim().isEmpty()) {
-            throw new RuntimeException("Username is mandatory!");
+            throw new RuntimeException("Wymagana jest nazwa użytkownika");
         }
 
         return userRepository.findByUsername(s);
@@ -38,7 +37,10 @@ public class UserService implements UserDetailsService {
 
     public User addUser(User user) {
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        return userRepository.save(user);
+        User currentUser = userRepository.findByUsername(user.getUsername());
+        if (currentUser == null)
+            return userRepository.save(user);
+        else throw new RuntimeException("Użytkownik już istnieje");
     }
 
     public User updateUser(long id, User newUser) {
